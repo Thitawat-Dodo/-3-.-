@@ -73,12 +73,14 @@ p,li{font-size:clamp(13px,2.2vmin,20px);line-height:1.5}
 .d2{background:linear-gradient(135deg,#0f766e,#14b8a6)}
 .d3{background:linear-gradient(135deg,#c2410c,#f97316)}
 .d4{background:linear-gradient(135deg,#5b21b6,#8b5cf6)}
-/* nav */
-#nav{position:fixed;bottom:0;left:0;right:0;height:5.5vh;min-height:40px;background:rgba(15,23,42,.95);display:flex;align-items:center;justify-content:center;gap:14px;z-index:50}
-#nav button{font-family:'Sarabun',sans-serif;background:#334155;color:#e2e8f0;border:none;border-radius:8px;padding:4px 16px;font-size:clamp(12px,1.8vmin,15px);cursor:pointer}
-#nav button:hover{background:var(--blue)}
-#counter{color:#94a3b8;font-size:clamp(11px,1.6vmin,14px);min-width:80px;text-align:center}
-#bar{position:fixed;bottom:5.5vh;left:0;height:.4vh;background:#fbbf24;z-index:50;transition:width .3s}
+
+/* nav - ปรับแต่งขยายขนาดปุ่มที่นี่ที่เดียว */
+#nav{position:fixed;bottom:0;left:0;right:0;height:6.5vh;min-height:50px;background:rgba(15,23,42,.95);display:flex;align-items:center;justify-content:center;gap:20px;z-index:50}
+#nav button{font-family:'Sarabun',sans-serif;background:#334155;color:#e2e8f0;border:none;border-radius:10px;padding:8px 24px;font-size:clamp(15px,2.2vmin,20px);font-weight:600;cursor:pointer;transition:all 0.2s ease}
+#nav button:hover{background:var(--blue);color:#fff;transform:scale(1.05)}
+#counter{color:#94a3b8;font-size:clamp(13px,1.8vmin,16px);min-width:90px;text-align:center;font-weight:600}
+#bar{position:fixed;bottom:6.5vh;left:0;height:.4vh;background:#fbbf24;z-index:50;transition:width .3s}
+
 /* quiz */
 .opt{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:1.4vh 1.2vw;margin-bottom:1vh;font-family:'Sarabun',sans-serif;font-size:clamp(13px,2.2vmin,19px);cursor:pointer;transition:.15s}
 .opt:hover{border-color:var(--accent,var(--blue));background:#f8fafc}
@@ -101,7 +103,7 @@ p,li{font-size:clamp(13px,2.2vmin,20px);line-height:1.5}
 ol.qlist{padding-left:1.4em}
 ol.qlist li{margin-bottom:1vh}
 /* sidebar */
-#sidebar{position:fixed;left:0;top:0;bottom:5.5vh;width:210px;background:#0f172a;color:#cbd5e1;padding:5vh 1vw 2vh;display:flex;flex-direction:column;gap:.5vh;z-index:40;border-right:1px solid rgba(255,255,255,.08);transition:transform .3s ease}
+#sidebar{position:fixed;left:0;top:0;bottom:6.5vh;width:210px;background:#0f172a;color:#cbd5e1;padding:5vh 1vw 2vh;display:flex;flex-direction:column;gap:.5vh;z-index:40;border-right:1px solid rgba(255,255,255,.08);transition:transform .3s ease}
 #sidebar.collapsed{transform:translateX(-210px)}
 #sidebar .brand{font-family:'Kanit',sans-serif;font-weight:700;font-size:clamp(12px,1.8vmin,15px);color:#fbbf24;letter-spacing:.1em;margin-bottom:1.5vh;padding:0 .4vw}
 #sidebar .brand small{display:block;font-family:'Sarabun',sans-serif;font-weight:400;font-size:clamp(9px,1.4vmin,11px);color:#94a3b8;margin-top:.3vh;letter-spacing:.05em;line-height:1.3}
@@ -125,6 +127,7 @@ ol.qlist li{margin-bottom:1vh}
 #toggle:hover{background:var(--blue);color:#fff}
 .slide{padding-left:calc(4vw + 210px)}
 #deck.shifted .slide{padding-left:4vw}
+
 /* ===== interactive v2 ===== */
 .card.link{cursor:pointer;transition:.18s;position:relative;padding-bottom:4vh}
 .card.link:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(15,23,42,.14)}
