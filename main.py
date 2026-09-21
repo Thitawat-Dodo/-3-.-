@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """
 main.py
-สคริปต์ Python ธรรมดา ๆ ที่เขียนเนื้อหาไฟล์ slides.html ออกมาตรง ๆ
-(ไม่มีการ import/ถอดรหัสใด ๆ - เนื้อหา HTML ทั้งหมดอยู่ในตัวแปร string นี้เลย)
+สคริปต์ Python ที่รองรับการแสดงผลบน Streamlit แบบเต็มหน้าจอ (No Scrollbar)
+และรันผ่าน `python main.py` เพื่อสร้างไฟล์ slides.html ได้เช่นกัน
 
 วิธีใช้งาน:
+    streamlit run main.py
+    หรือ
     python main.py
 """
 
@@ -29,32 +31,32 @@ HTML = r"""
   --green:#16a34a; --red:#dc2626;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%}
-body{font-family:'Sarabun',sans-serif;background:#0f172a;color:var(--ink);overflow:hidden}
+html,body{height:100%;width:100%;overflow:hidden}
+body{font-family:'Sarabun',sans-serif;background:#0f172a;color:var(--ink)}
 #deck{position:fixed;inset:0}
-.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:4.2vh 5.5vw 8.5vh;background:var(--bg)}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:3vh 4vw 7vh;background:var(--bg);overflow-y:auto}
 .slide.active{display:flex;animation:fadein .35s ease}
 @keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .slide::before{content:"";position:absolute;top:0;left:0;right:0;height:.9vh;background:var(--accent,var(--blue))}
-h1{font-family:'Kanit',sans-serif;font-size:clamp(28px,5.6vmin,54px);line-height:1.2}
-h2{font-family:'Kanit',sans-serif;font-size:clamp(22px,4.4vmin,40px);color:var(--accent,var(--blue));margin-bottom:2.2vh}
-h3{font-family:'Kanit',sans-serif;font-size:clamp(17px,3vmin,26px);margin-bottom:1.2vh}
-p,li{font-size:clamp(14px,2.5vmin,22px);line-height:1.6}
-.small{font-size:clamp(12px,1.9vmin,17px);color:var(--muted)}
-.kicker{font-family:'Kanit',sans-serif;letter-spacing:.14em;text-transform:uppercase;font-size:clamp(11px,1.8vmin,15px);color:var(--muted);margin-bottom:1vh}
+h1{font-family:'Kanit',sans-serif;font-size:clamp(24px,4.5vmin,48px);line-height:1.2}
+h2{font-family:'Kanit',sans-serif;font-size:clamp(20px,3.8vmin,36px);color:var(--accent,var(--blue));margin-bottom:1.8vh}
+h3{font-family:'Kanit',sans-serif;font-size:clamp(16px,2.6vmin,24px);margin-bottom:1vh}
+p,li{font-size:clamp(13px,2.2vmin,20px);line-height:1.5}
+.small{font-size:clamp(11px,1.7vmin,16px);color:var(--muted)}
+.kicker{font-family:'Kanit',sans-serif;letter-spacing:.14em;text-transform:uppercase;font-size:clamp(10px,1.6vmin,14px);color:var(--muted);margin-bottom:1vh}
 .body{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0}
-.footer-tag{position:absolute;bottom:2.6vh;left:5.5vw;font-size:clamp(10px,1.6vmin,14px);color:var(--muted)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:2.4vh 1.6vw;box-shadow:0 2px 10px rgba(15,23,42,.05)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.6vw}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2vw}
+.footer-tag{position:absolute;bottom:2vh;left:4vw;font-size:clamp(10px,1.5vmin,13px);color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:2vh 1.4vw;box-shadow:0 2px 10px rgba(15,23,42,.05)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.4vw}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2vw}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1vw}
 .center{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;flex:1}
 /* fractions */
 .frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .25em;line-height:1.05;font-size:.85em}
 .frac>span:first-child{border-bottom:2px solid currentColor;padding:0 .3em}
 .frac>span:last-child{padding:0 .3em}
 /* chips / badges */
-.chip{display:inline-block;padding:.25em .8em;border-radius:999px;font-weight:600;font-size:clamp(12px,2vmin,17px)}
+.chip{display:inline-block;padding:.25em .8em;border-radius:999px;font-weight:600;font-size:clamp(11px,1.8vmin,15px)}
 .chip.blue{background:var(--blue-soft);color:var(--blue)}
 .chip.teal{background:var(--teal-soft);color:var(--teal)}
 .chip.orange{background:var(--orange-soft);color:var(--orange)}
@@ -66,47 +68,47 @@ p,li{font-size:clamp(14px,2.5vmin,22px);line-height:1.6}
 .title-slide .sub{color:#dbeafe}
 /* divider slides */
 .divider{color:#fff;justify-content:center}
-.divider .big-num{font-family:'Kanit',sans-serif;font-size:clamp(60px,14vmin,150px);font-weight:700;opacity:.25;line-height:1}
+.divider .big-num{font-family:'Kanit',sans-serif;font-size:clamp(50px,12vmin,130px);font-weight:700;opacity:.25;line-height:1}
 .d1{background:linear-gradient(135deg,#1e40af,#2563eb)}
 .d2{background:linear-gradient(135deg,#0f766e,#14b8a6)}
 .d3{background:linear-gradient(135deg,#c2410c,#f97316)}
 .d4{background:linear-gradient(135deg,#5b21b6,#8b5cf6)}
 /* nav */
-#nav{position:fixed;bottom:0;left:0;right:0;height:6vh;min-height:44px;background:rgba(15,23,42,.92);display:flex;align-items:center;justify-content:center;gap:14px;z-index:50}
-#nav button{font-family:'Sarabun',sans-serif;background:#334155;color:#e2e8f0;border:none;border-radius:8px;padding:6px 18px;font-size:clamp(13px,2vmin,16px);cursor:pointer}
+#nav{position:fixed;bottom:0;left:0;right:0;height:5.5vh;min-height:40px;background:rgba(15,23,42,.95);display:flex;align-items:center;justify-content:center;gap:14px;z-index:50}
+#nav button{font-family:'Sarabun',sans-serif;background:#334155;color:#e2e8f0;border:none;border-radius:8px;padding:4px 16px;font-size:clamp(12px,1.8vmin,15px);cursor:pointer}
 #nav button:hover{background:var(--blue)}
-#counter{color:#94a3b8;font-size:clamp(12px,1.8vmin,15px);min-width:90px;text-align:center}
-#bar{position:fixed;bottom:6vh;left:0;height:.5vh;background:#fbbf24;z-index:50;transition:width .3s}
+#counter{color:#94a3b8;font-size:clamp(11px,1.6vmin,14px);min-width:80px;text-align:center}
+#bar{position:fixed;bottom:5.5vh;left:0;height:.4vh;background:#fbbf24;z-index:50;transition:width .3s}
 /* quiz */
-.opt{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:1.6vh 1.4vw;margin-bottom:1.2vh;font-family:'Sarabun',sans-serif;font-size:clamp(14px,2.4vmin,21px);cursor:pointer;transition:.15s}
+.opt{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:1.4vh 1.2vw;margin-bottom:1vh;font-family:'Sarabun',sans-serif;font-size:clamp(13px,2.2vmin,19px);cursor:pointer;transition:.15s}
 .opt:hover{border-color:var(--accent,var(--blue));background:#f8fafc}
 .opt.correct{border-color:var(--green);background:#f0fdf4;font-weight:700}
 .opt.wrong{border-color:var(--red);background:#fef2f2}
-.explain{display:none;margin-top:1vh;background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:1.6vh 1.4vw}
+.explain{display:none;margin-top:1vh;background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:1.4vh 1.2vw}
 .explain.show{display:block;animation:fadein .3s ease}
-.reveal-btn{font-family:'Sarabun',sans-serif;background:var(--accent,var(--blue));color:#fff;border:none;border-radius:10px;padding:1.2vh 2vw;font-size:clamp(13px,2.2vmin,19px);cursor:pointer;margin-top:1vh}
+.reveal-btn{font-family:'Sarabun',sans-serif;background:var(--accent,var(--blue));color:#fff;border:none;border-radius:10px;padding:1vh 1.8vw;font-size:clamp(12px,2vmin,17px);cursor:pointer;margin-top:1vh}
 /* symbol grid */
-.sym{background:#fff;border:1px solid var(--line);border-radius:12px;padding:1.6vh 1vw;text-align:center}
-.sym .s{font-family:'Kanit',sans-serif;font-size:clamp(18px,3.4vmin,30px);color:var(--blue);font-weight:700}
-.sym .d{font-size:clamp(11px,1.9vmin,16px);color:var(--muted);margin-top:.4vh}
+.sym{background:#fff;border:1px solid var(--line);border-radius:12px;padding:1.4vh .8vw;text-align:center}
+.sym .s{font-family:'Kanit',sans-serif;font-size:clamp(16px,3vmin,26px);color:var(--blue);font-weight:700}
+.sym .d{font-size:clamp(10px,1.7vmin,15px);color:var(--muted);margin-top:.3vh}
 /* example visuals */
-.ex-visual{display:flex;gap:1.4vw;align-items:stretch;flex-wrap:wrap}
-.ex-item{flex:1;min-width:180px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.8vh 1.2vw;text-align:center}
-.ex-item .icon{font-size:clamp(26px,5vmin,44px)}
+.ex-visual{display:flex;gap:1.2vw;align-items:stretch;flex-wrap:wrap}
+.ex-item{flex:1;min-width:160px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.5vh 1vw;text-align:center}
+.ex-item .icon{font-size:clamp(22px,4.5vmin,38px)}
 .num{font-family:'Kanit',sans-serif;font-weight:700;color:var(--accent,var(--blue))}
-.ansline{background:#f0fdf4;border-left:5px solid var(--green);border-radius:8px;padding:1.2vh 1.2vw;margin-top:.8vh}
-.stepbox{background:#eff6ff;border-left:5px solid var(--blue);border-radius:8px;padding:1.2vh 1.2vw;margin-top:1vh}
+.ansline{background:#f0fdf4;border-left:5px solid var(--green);border-radius:8px;padding:1vh 1vw;margin-top:.6vh}
+.stepbox{background:#eff6ff;border-left:5px solid var(--blue);border-radius:8px;padding:1vh 1vw;margin-top:.8vh}
 ol.qlist{padding-left:1.4em}
-ol.qlist li{margin-bottom:1.4vh}
+ol.qlist li{margin-bottom:1vh}
 /* sidebar */
-#sidebar{position:fixed;left:0;top:0;bottom:6vh;width:230px;background:#0f172a;color:#cbd5e1;padding:6vh 1.2vw 2vh;display:flex;flex-direction:column;gap:.6vh;z-index:40;border-right:1px solid rgba(255,255,255,.08);transition:transform .3s ease}
-#sidebar.collapsed{transform:translateX(-230px)}
-#sidebar .brand{font-family:'Kanit',sans-serif;font-weight:700;font-size:clamp(13px,2vmin,16px);color:#fbbf24;letter-spacing:.1em;margin-bottom:1.8vh;padding:0 .4vw}
-#sidebar .brand small{display:block;font-family:'Sarabun',sans-serif;font-weight:400;font-size:clamp(10px,1.5vmin,12px);color:#94a3b8;margin-top:.4vh;letter-spacing:.05em;line-height:1.35}
-.sb-item{display:flex;align-items:center;gap:.8vw;padding:1.4vh .6vw;border-radius:10px;cursor:pointer;font-family:'Sarabun',sans-serif;font-size:clamp(12px,1.85vmin,15px);border:none;background:transparent;color:#cbd5e1;text-align:left;width:100%}
+#sidebar{position:fixed;left:0;top:0;bottom:5.5vh;width:210px;background:#0f172a;color:#cbd5e1;padding:5vh 1vw 2vh;display:flex;flex-direction:column;gap:.5vh;z-index:40;border-right:1px solid rgba(255,255,255,.08);transition:transform .3s ease}
+#sidebar.collapsed{transform:translateX(-210px)}
+#sidebar .brand{font-family:'Kanit',sans-serif;font-weight:700;font-size:clamp(12px,1.8vmin,15px);color:#fbbf24;letter-spacing:.1em;margin-bottom:1.5vh;padding:0 .4vw}
+#sidebar .brand small{display:block;font-family:'Sarabun',sans-serif;font-weight:400;font-size:clamp(9px,1.4vmin,11px);color:#94a3b8;margin-top:.3vh;letter-spacing:.05em;line-height:1.3}
+.sb-item{display:flex;align-items:center;gap:.6vw;padding:1.2vh .5vw;border-radius:10px;cursor:pointer;font-family:'Sarabun',sans-serif;font-size:clamp(11px,1.7vmin,14px);border:none;background:transparent;color:#cbd5e1;text-align:left;width:100%}
 .sb-item:hover{background:rgba(255,255,255,.06);color:#fff}
-.sb-item .num{width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-family:'Kanit',sans-serif;font-weight:700;font-size:clamp(11px,1.7vmin,14px);flex-shrink:0;background:rgba(255,255,255,.06);color:#e2e8f0}
-.sb-item .lbl{line-height:1.3}
+.sb-item .num{width:24px;height:24px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-family:'Kanit',sans-serif;font-weight:700;font-size:clamp(10px,1.5vmin,13px);flex-shrink:0;background:rgba(255,255,255,.06);color:#e2e8f0}
+.sb-item .lbl{line-height:1.2}
 .sb-item.home .num{background:#3b82f6;color:#fff}
 .sb-item.t1 .num{background:#2563eb;color:#fff}
 .sb-item.t2 .num{background:#0d9488;color:#fff}
@@ -118,39 +120,38 @@ ol.qlist li{margin-bottom:1.4vh}
 .sb-item.t2.active{background:rgba(13,148,136,.25);color:#fff}
 .sb-item.t3.active{background:rgba(234,88,12,.25);color:#fff}
 .sb-item.t4.active{background:rgba(124,58,237,.25);color:#fff}
-#toggle{position:fixed;left:230px;top:50%;transform:translateY(-50%);background:#334155;color:#e2e8f0;border:none;border-radius:0 10px 10px 0;padding:1.2vh .8vw;font-size:clamp(13px,2vmin,16px);cursor:pointer;z-index:45;transition:left .3s ease;font-family:'Sarabun',sans-serif}
+#toggle{position:fixed;left:210px;top:50%;transform:translateY(-50%);background:#334155;color:#e2e8f0;border:none;border-radius:0 10px 10px 0;padding:1vh .6vw;font-size:clamp(12px,1.8vmin,15px);cursor:pointer;z-index:45;transition:left .3s ease;font-family:'Sarabun',sans-serif}
 #toggle.collapsed{left:0}
 #toggle:hover{background:var(--blue);color:#fff}
-.slide{padding-left:calc(5.5vw + 230px)}
-#deck.shifted .slide{padding-left:5.5vw}
+.slide{padding-left:calc(4vw + 210px)}
+#deck.shifted .slide{padding-left:4vw}
 /* ===== interactive v2 ===== */
-.card.link{cursor:pointer;transition:.18s;position:relative;padding-bottom:4.8vh}
+.card.link{cursor:pointer;transition:.18s;position:relative;padding-bottom:4vh}
 .card.link:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(15,23,42,.14)}
-.card.link .hint{position:absolute;bottom:1.2vh;right:1.1vw;font-size:clamp(10px,1.6vmin,13px);color:var(--muted);opacity:.75;font-weight:600}
+.card.link .hint{position:absolute;bottom:1vh;right:1vw;font-size:clamp(9px,1.5vmin,12px);color:var(--muted);opacity:.75;font-weight:600}
 .card.link:hover .hint{opacity:1;color:var(--accent,var(--blue))}
 .sym{cursor:pointer;transition:.18s}
 .sym:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(15,23,42,.12);border-color:var(--blue)}
 .sym.on{border-color:var(--blue);background:#eff6ff;box-shadow:0 6px 18px rgba(37,99,235,.2)}
-.bubble{display:none;position:relative;margin-top:2.2vh;background:#fff;border:2px solid var(--blue);border-radius:14px;padding:1.7vh 1.5vw;box-shadow:0 10px 28px rgba(15,23,42,.12)}
+.bubble{display:none;position:relative;margin-top:1.8vh;background:#fff;border:2px solid var(--blue);border-radius:14px;padding:1.4vh 1.2vw;box-shadow:0 10px 28px rgba(15,23,42,.12)}
 .bubble.show{display:block;animation:fadein .28s ease}
 .bubble::before{content:"";position:absolute;top:-11px;left:5%;border-left:11px solid transparent;border-right:11px solid transparent;border-bottom:11px solid var(--blue)}
-.bubble h3{color:var(--blue);font-size:clamp(15px,2.6vmin,22px);margin-bottom:.7vh}
-.bubble .ex{font-family:'Kanit',sans-serif;font-size:clamp(15px,2.9vmin,24px);color:var(--ink)}
-.bubble .why{font-size:clamp(12px,2vmin,17px);color:var(--muted);margin-top:.7vh;line-height:1.5}
-.mini-graph{display:none;margin-top:1.3vh;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:.8vh .6vw}
+.bubble h3{color:var(--blue);font-size:clamp(14px,2.4vmin,20px);margin-bottom:.5vh}
+.bubble .ex{font-family:'Kanit',sans-serif;font-size:clamp(14px,2.6vmin,22px);color:var(--ink)}
+.bubble .why{font-size:clamp(11px,1.8vmin,15px);color:var(--muted);margin-top:.5vh;line-height:1.4}
+.mini-graph{display:none;margin-top:1vh;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:.6vh .5vw}
 .mini-graph.show{display:block;animation:fadein .28s ease}
-.mini-graph svg{width:100%;height:auto;max-height:25vh;display:block}
+.mini-graph svg{width:100%;height:auto;max-height:22vh;display:block}
 .anscard{cursor:pointer;transition:.18s}
 .anscard:hover{box-shadow:0 6px 18px rgba(15,23,42,.12);transform:translateY(-2px)}
 .anscard.on{border-color:var(--green);box-shadow:0 6px 20px rgba(22,163,74,.2)}
-.pie-wrap{display:none;margin-top:1.4vh}
+.pie-wrap{display:none;margin-top:1vh}
 .pie-wrap.show{display:block;animation:fadein .28s ease}
-.pie-wrap svg{width:min(100%,200px);height:auto;display:block;margin:0 auto}
-.sec-head{font-family:'Kanit',sans-serif;font-size:clamp(15px,2.6vmin,22px);font-weight:700;color:var(--orange);border-left:5px solid var(--orange);padding-left:.6vw;margin-bottom:1.6vh}
+.pie-wrap svg{width:min(100%,170px);height:auto;display:block;margin:0 auto}
+.sec-head{font-family:'Kanit',sans-serif;font-size:clamp(14px,2.4vmin,20px);font-weight:700;color:var(--orange);border-left:5px solid var(--orange);padding-left:.5vw;margin-bottom:1.2vh}
 .sec-head.p{color:var(--purple);border-left-color:var(--purple)}
-.qnum{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;font-family:'Kanit',sans-serif;font-weight:700;font-size:clamp(11px,1.8vmin,14px);margin-right:.5em;vertical-align:middle}
+.qnum{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:50%;background:var(--orange);color:#fff;font-family:'Kanit',sans-serif;font-weight:700;font-size:clamp(10px,1.6vmin,13px);margin-right:.4em;vertical-align:middle}
 .qnum.p{background:var(--purple)}
-
 </style>
 </head>
 <body>
@@ -170,7 +171,7 @@ ol.qlist li{margin-bottom:1.4vh}
   <div class="center">
     <div class="kicker">Mathematics · คณิตศาสตร์เบื้องต้น</div>
     <h1>เศษส่วน อัตราส่วน ร้อยละ</h1>
-    <p style="font-family:'Kanit';font-size:clamp(18px,3.2vmin,30px);margin-top:2vh">Fractions · Ratio · Percentage</p>
+    <p style="font-family:'Kanit';font-size:clamp(16px,3vmin,26px);margin-top:2vh">Fractions · Ratio · Percentage</p>
   </div>
   <div class="footer-tag" style="color:#bfdbfe">กด → เพื่อไปต่อ หรือคลิกปุ่ม Next ด้านล่าง</div>
 </section>
@@ -179,7 +180,7 @@ ol.qlist li{margin-bottom:1.4vh}
 <section class="slide">
   <h2>เนื้อหาการเรียนรู้วันนี้ (Lesson Overview)</h2>
   <div class="body">
-    <div class="grid2" style="gap:1.6vw">
+    <div class="grid2" style="gap:1.4vw">
       <div class="card" style="border-top:6px solid var(--blue)">
         <span class="chip blue">หมวดที่ 1</span>
         <h3>ระบบจำนวน (Number System)</h3>
@@ -210,7 +211,7 @@ ol.qlist li{margin-bottom:1.4vh}
   <div class="center">
     <div class="big-num">01</div>
     <h1>ระบบจำนวน</h1>
-    <p style="color:#bfdbfe;font-family:'Kanit';font-size:clamp(16px,2.8vmin,26px)">Number System</p>
+    <p style="color:#bfdbfe;font-family:'Kanit';font-size:clamp(15px,2.6vmin,24px)">Number System</p>
   </div>
 </section>
 
@@ -297,7 +298,7 @@ ol.qlist li{margin-bottom:1.4vh}
       <div class="sym"><div class="s">I</div><div class="d">เซตของจำนวนเต็ม</div></div>
       <div class="sym"><div class="s">I⁺ / I⁻</div><div class="d">จำนวนเต็มบวก / เต็มลบ</div></div>
     </div>
-    <div class="card" style="margin-top:2.4vh;background:#eff6ff;border-left:5px solid var(--blue)">
+    <div class="card" style="margin-top:2vh;background:#eff6ff;border-left:5px solid var(--blue)">
       <p><b>จำไว้ (Remember):</b> จำนวนตรรกยะ (Q) คือจำนวนที่เขียนเป็นเศษส่วน
       <span class="frac"><span>a</span><span>b</span></span> ได้ เมื่อ a, b เป็นจำนวนเต็มและ b ≠ 0 —
       ส่วนจำนวนอตรรกยะ (Q′) คือทศนิยมไม่รู้จบไม่ซ้ำ เช่น <b>√2, π</b></p>
@@ -311,7 +312,7 @@ ol.qlist li{margin-bottom:1.4vh}
   <div class="center">
     <div class="big-num">02</div>
     <h1>อัตราส่วน สัดส่วน และอัตราส่วนต่อเนื่อง</h1>
-    <p style="color:#99f6e4;font-family:'Kanit';font-size:clamp(16px,2.8vmin,26px)">Ratio · Proportion · Continued Ratio</p>
+    <p style="color:#99f6e4;font-family:'Kanit';font-size:clamp(15px,2.6vmin,24px)">Ratio · Proportion · Continued Ratio</p>
   </div>
 </section>
 
@@ -324,17 +325,17 @@ ol.qlist li{margin-bottom:1.4vh}
         <span class="chip teal">1) สัดส่วนตรง</span>
         <h3 style="color:var(--teal)">Direct Proportion</h3>
         <p>เปรียบเทียบระหว่าง 2 ปริมาณ โดยมีเงื่อนไขคือ</p>
-        <p style="margin-top:1vh">✅ ถ้าปริมาณหนึ่ง<b>เพิ่มขึ้น</b> อีกปริมาณหนึ่งจะ<b>เพิ่มขึ้นตาม</b></p>
+        <p style="margin-top:.8vh">✅ ถ้าปริมาณหนึ่ง<b>เพิ่มขึ้น</b> อีกปริมาณหนึ่งจะ<b>เพิ่มขึ้นตาม</b></p>
         <p>✅ ถ้าปริมาณหนึ่ง<b>ลดลง</b> อีกปริมาณหนึ่งจะ<b>ลดลงตาม</b></p>
-        <p class="small" style="margin-top:1.4vh">ตัวอย่าง: ยิ่งซื้อบะหมี่หลายชาม ยิ่งจ่ายเงินมาก</p>
+        <p class="small" style="margin-top:1vh">ตัวอย่าง: ยิ่งซื้อบะหมี่หลายชาม ยิ่งจ่ายเงินมาก</p>
       </div>
       <div class="card" style="border-top:6px solid var(--orange)">
         <span class="chip orange">2) สัดส่วนผกผัน</span>
         <h3 style="color:var(--orange)">Inverse Proportion</h3>
         <p>เปรียบเทียบระหว่าง 2 ปริมาณ โดยมีเงื่อนไขคือ</p>
-        <p style="margin-top:1vh">🔄 ถ้าปริมาณหนึ่ง<b>เพิ่มขึ้น</b> อีกปริมาณหนึ่งจะ<b>ลดลง</b></p>
+        <p style="margin-top:.8vh">🔄 ถ้าปริมาณหนึ่ง<b>เพิ่มขึ้น</b> อีกปริมาณหนึ่งจะ<b>ลดลง</b></p>
         <p>🔄 ถ้าปริมาณหนึ่ง<b>ลดลง</b> อีกปริมาณหนึ่งจะ<b>เพิ่มขึ้น</b></p>
-        <p class="small" style="margin-top:1.4vh">ตัวอย่าง: ยิ่งมีคนงานมาก ยิ่งใช้เวลาทำงานน้อยลง</p>
+        <p class="small" style="margin-top:1vh">ตัวอย่าง: ยิ่งมีคนงานมาก ยิ่งใช้เวลาทำงานน้อยลง</p>
       </div>
     </div>
   </div>
@@ -380,25 +381,25 @@ ol.qlist li{margin-bottom:1.4vh}
       <div class="ex-item">
         <div class="icon">🍜</div>
         <p><b>ข้อ 1</b><br>บะหมี่ 4 ชาม ราคา 80 บาท ถ้าพินมีเงิน 360 บาท จะกินบะหมี่ได้ทั้งหมดกี่ชาม</p>
-        <p class="small" style="margin-top:.8vh">💡 สัดส่วนตรง</p>
+        <p class="small" style="margin-top:.6vh">💡 สัดส่วนตรง</p>
       </div>
       <div class="ex-item">
         <div class="icon">👷</div>
         <p><b>ข้อ 2</b><br>ในหนึ่งวัน ช่าง 5 คน สร้างกำแพงได้ 35 เมตร ถ้ามีช่าง 8 คน จะสร้างกำแพงได้กี่เมตร</p>
-        <p class="small" style="margin-top:.8vh">💡 สัดส่วนตรง</p>
+        <p class="small" style="margin-top:.6vh">💡 สัดส่วนตรง</p>
       </div>
       <div class="ex-item">
         <div class="icon">⏳</div>
         <p><b>ข้อ 3</b><br>คน 10 คน ทำงานชิ้นหนึ่งเสร็จในเวลา 50 วัน ถ้ามีคน 5 คน ทำงานชิ้นนี้ให้เสร็จ จะใช้เวลากี่วัน</p>
-        <p class="small" style="margin-top:.8vh">💡 สัดส่วนผกผัน</p>
+        <p class="small" style="margin-top:.6vh">💡 สัดส่วนผกผัน</p>
       </div>
       <div class="ex-item">
         <div class="icon">🏗️</div>
         <p><b>ข้อ 4</b><br>ช่างก่อสร้าง 8 คน ทำงานชิ้นหนึ่งเสร็จในเวลา 5 วัน ถ้ามีช่าง 4 คน ทำงาน 3 ชิ้นนี้ให้เสร็จ จะใช้เวลากี่วัน</p>
-        <p class="small" style="margin-top:.8vh">💡 สัดส่วนผกผัน</p>
+        <p class="small" style="margin-top:.6vh">💡 สัดส่วนผกผัน</p>
       </div>
     </div>
-    <p class="small" style="margin-top:2vh; text-align:center">ลองคิดด้วยตัวเองก่อน แล้วไปดูเฉลยพร้อมวิธีทำในสไลด์ถัดไป</p>
+    <p class="small" style="margin-top:1.5vh; text-align:center">ลองคิดด้วยตัวเองก่อน แล้วไปดูเฉลยพร้อมวิธีทำในสไลด์ถัดไป</p>
   </div>
   <div class="footer-tag">หมวดที่ 2 · ตัวอย่างจากบทเรียน</div>
 </section>
@@ -423,7 +424,7 @@ ol.qlist li{margin-bottom:1.4vh}
         <p><b>ข้อ 4</b> 🏗️ (ผกผัน) ช่าง 8 → 4 คน และงานเพิ่มเป็น 3 ชิ้น → x = <span class="frac"><span>8×5×3</span><span>4</span></span> = <span class="num">30 วัน</span></p>
       </div>
     </div>
-    <div class="stepbox" style="margin-top:2vh">
+    <div class="stepbox" style="margin-top:1.5vh">
       <p class="small">ข้อสังเกต: ข้อ 3–4 เป็น<b>สัดส่วนผกผัน</b> จึงต้อง<b>กลับอัตราส่วน</b>ก่อนคูณ — ถ้าคิดตรง ๆ จะผิดทันที</p>
     </div>
   </div>
@@ -434,7 +435,7 @@ ol.qlist li{margin-bottom:1.4vh}
 <section class="slide" style="--accent:var(--teal)">
   <h2>อัตราส่วนต่อเนื่อง (Continued Ratio)</h2>
   <div class="body">
-    <div class="card" style="margin-bottom:2vh">
+    <div class="card" style="margin-bottom:1.5vh">
       <p><b>ความหมาย:</b> อัตราส่วนของจำนวน<b>ตั้งแต่ 3 จำนวนขึ้นไป</b>เขียนต่อเนื่องกัน เช่น a : b : c</p>
       <p><b>การเชื่อมอัตราส่วน:</b> ทำ<b>ตัวเชื่อม (ตัวแปรร่วม)</b> ให้มีค่าเท่ากันก่อน</p>
     </div>
@@ -448,7 +449,7 @@ ol.qlist li{margin-bottom:1.4vh}
           <p class="small">ดินสอ : ปากกา = 3:5 = <b>12 : 20</b></p>
           <p class="small">ปากกา : สมุด = 4:7 = <b>20 : 35</b></p>
         </div>
-        <p style="margin-top:1vh">ตอบ: ดินสอ : ปากกา : สมุด = <span class="num">12 : 20 : 35</span></p>
+        <p style="margin-top:.8vh">ตอบ: ดินสอ : ปากกา : สมุด = <span class="num">12 : 20 : 35</span></p>
       </div>
       <div class="card" style="border-left:6px solid var(--teal)">
         <h3>ตัวอย่าง 📦 กว้าง : ยาว : สูง</h3>
@@ -459,7 +460,7 @@ ol.qlist li{margin-bottom:1.4vh}
           <p class="small">กว้าง : ยาว = 5:8 = <b>15 : 24</b></p>
           <p class="small">สูง : ยาว = 4:6 = 2:3 = <b>16 : 24</b></p>
         </div>
-        <p style="margin-top:1vh">ตอบ: กว้าง : ยาว : สูง = <span class="num">15 : 24 : 16</span></p>
+        <p style="margin-top:.8vh">ตอบ: กว้าง : ยาว : สูง = <span class="num">15 : 24 : 16</span></p>
       </div>
     </div>
   </div>
@@ -470,7 +471,7 @@ ol.qlist li{margin-bottom:1.4vh}
 <section class="slide" style="--accent:var(--teal)">
   <h2>โจทย์ประยุกต์ในชีวิตจริง (Real-World Problems)</h2>
   <div class="body">
-    <div class="grid2" style="gap:1.2vw">
+    <div class="grid2" style="gap:1vw">
       <div class="card"><p><b>📈 โจทย์เรื่องหุ้นส่วน</b><br>พีระถือหุ้น <span class="frac"><span>1</span><span>4</span></span> มานะถือ <span class="frac"><span>2</span><span>5</span></span> ของทั้งหมด อารีถือส่วนที่เหลือ ถ้ากำไรสุทธิ 2,400,000 บาท อารีจะได้รับส่วนแบ่งกำไรกี่บาท</p></div>
       <div class="card"><p><b>🪵 การบริหารวัตถุดิบเหลือใช้</b><br>โรงงานมีไม้ซุง 8.4 ตัน เดือนแรกใช้ไป <span class="frac"><span>2</span><span>7</span></span> ของทั้งหมด จะเหลือวัตถุดิบกี่กิโลกรัม (1 ตัน = 1,000 กก.)</p></div>
       <div class="card"><p><b>💹 การคำนวณต้นทุนซื้อหลักทรัพย์</b><br>ซื้อหุ้น 2,500 หุ้น ราคาหุ้นละ 25.50 บาท ค่าธรรมเนียม 0.20% ของยอดซื้อ ต้องเตรียมเงินทั้งหมดกี่บาท</p></div>
@@ -485,7 +486,7 @@ ol.qlist li{margin-bottom:1.4vh}
 <section class="slide" style="--accent:var(--teal)">
   <h2>เฉลยโจทย์ประยุกต์ (Answers)</h2>
   <div class="body">
-    <div class="grid2" style="gap:1.2vw">
+    <div class="grid2" style="gap:1vw">
       <div class="card ansline"><p><b>หุ้นส่วน:</b> พีระ+มานะ = <span class="frac"><span>1</span><span>4</span></span>+<span class="frac"><span>2</span><span>5</span></span> = <span class="frac"><span>13</span><span>20</span></span> → อารีได้ <span class="frac"><span>7</span><span>20</span></span> = 2,400,000 × <span class="frac"><span>7</span><span>20</span></span> = <span class="num">840,000 บาท</span></p></div>
       <div class="card ansline"><p><b>ไม้ซุง:</b> ใช้ไป <span class="frac"><span>2</span><span>7</span></span> เหลือ <span class="frac"><span>5</span><span>7</span></span> → 8.4 × <span class="frac"><span>5</span><span>7</span></span> = 6 ตัน = <span class="num">6,000 กิโลกรัม</span></p></div>
       <div class="card ansline"><p><b>หลักทรัพย์:</b> 2,500 × 25.50 = 63,750 บาท ค่าธรรมเนียม 63,750 × 0.20% = 127.50 → รวม <span class="num">63,877.50 บาท</span></p></div>
@@ -501,7 +502,7 @@ ol.qlist li{margin-bottom:1.4vh}
   <div class="center">
     <div class="big-num">03</div>
     <h1>ร้อยละ</h1>
-    <p style="color:#fed7aa;font-family:'Kanit';font-size:clamp(16px,2.8vmin,26px)">Percentage</p>
+    <p style="color:#fed7aa;font-family:'Kanit';font-size:clamp(15px,2.6vmin,24px)">Percentage</p>
   </div>
 </section>
 
@@ -510,10 +511,10 @@ ol.qlist li{margin-bottom:1.4vh}
   <h2>นิยามของร้อยละ (Definition of Percentage)</h2>
   <div class="body">
     <div class="card" style="text-align:center;background:#fff7ed;border:2px solid var(--orange)">
-      <p style="font-family:'Kanit';font-size:clamp(18px,3.4vmin,30px)">ร้อยละ หมายถึง <b>"ต่อร้อย"</b> — อัตราส่วนที่มีจำนวนหลังเป็น 100</p>
-      <p style="margin-top:1.4vh">เช่น <span class="frac"><span>85</span><span>100</span></span> หรือ 85 : 100 หมายถึง ร้อยละ 85 หรือ <b>85%</b></p>
+      <p style="font-family:'Kanit';font-size:clamp(16px,3vmin,26px)">ร้อยละ หมายถึง <b>"ต่อร้อย"</b> — อัตราส่วนที่มีจำนวนหลังเป็น 100</p>
+      <p style="margin-top:1vh">เช่น <span class="frac"><span>85</span><span>100</span></span> หรือ 85 : 100 หมายถึง ร้อยละ 85 หรือ <b>85%</b></p>
     </div>
-    <div class="grid2" style="margin-top:2.4vh">
+    <div class="grid2" style="margin-top:2vh">
       <div class="ex-item">
         <div class="icon">🖊️</div>
         <p>ปากกาทั้งหมด 100 ด้าม เป็นสีแดง 30 ด้าม</p>
@@ -561,19 +562,19 @@ ol.qlist li{margin-bottom:1.4vh}
 <section class="slide" style="--accent:var(--orange)">
   <h2>เฉลยโจทย์ร้อยละ (Answers)</h2>
   <div class="body">
-    <div class="grid2" style="gap:1.2vw;align-items:start">
+    <div class="grid2" style="gap:1vw;align-items:start">
       <div class="card">
         <div class="sec-head">จากบทเรียน 📚</div>
-        <p class="small" style="margin-bottom:1.6vh"><span class="qnum">1</span><b>นักเรียนชาย 24% ของนักเรียนทั้งหมด 1,800 คน</b><br>1,800 × 24% = <span class="num">432 คน</span></p>
-        <p class="small" style="margin-bottom:1.6vh"><span class="qnum">2</span><b>พ่อค้าซื้อกางเกงราคา 450 บาท ขายได้กำไร 20%</b><br>450 × 20% = <span class="num">90 บาท</span></p>
+        <p class="small" style="margin-bottom:1.2vh"><span class="qnum">1</span><b>นักเรียนชาย 24% ของนักเรียนทั้งหมด 1,800 คน</b><br>1,800 × 24% = <span class="num">432 คน</span></p>
+        <p class="small" style="margin-bottom:1.2vh"><span class="qnum">2</span><b>พ่อค้าซื้อกางเกงราคา 450 บาท ขายได้กำไร 20%</b><br>450 × 20% = <span class="num">90 บาท</span></p>
         <p class="small"><span class="qnum">3</span><b>20% ของ 150 มากกว่า 10% ของ 190 เท่าใด</b><br>(150 × 20%) − (190 × 10%) = 30 − 19 = <span class="num">มากกว่า 11</span></p>
       </div>
       <div class="card">
         <div class="sec-head p">ลองคิดดูนะครับ 🤔</div>
-        <p class="small" style="margin-bottom:1.2vh"><span class="qnum p">1</span><b>8% ของ 75 เท่ากับเท่าใด</b><br>75 × 8% = <span class="num">6</span></p>
-        <p class="small" style="margin-bottom:1.2vh"><span class="qnum p">2</span><b>6 เป็นกี่เปอร์เซ็นต์ของ 40</b><br>6 ÷ 40 × 100 = <span class="num">15%</span></p>
-        <p class="small" style="margin-bottom:1.2vh"><span class="qnum p">3</span><b>ลดราคาจาก 50 บาท เหลือ 40 บาท ประหยัดกี่%</b><br>(50 − 40) ÷ 50 × 100 = <span class="num">20%</span></p>
-        <p class="small" style="margin-bottom:1.2vh"><span class="qnum p">4</span><b>โซฟาราคา 200 บาท ลด 20% แล้วลดอีก 20%</b><br>200 × 0.8 × 0.8 = <span class="num">128 บาท</span> <span style="color:var(--red);font-weight:700">(ไม่ใช่ลด 40%)</span></p>
+        <p class="small" style="margin-bottom:1vh"><span class="qnum p">1</span><b>8% ของ 75 เท่ากับเท่าใด</b><br>75 × 8% = <span class="num">6</span></p>
+        <p class="small" style="margin-bottom:1vh"><span class="qnum p">2</span><b>6 เป็นกี่เปอร์เซ็นต์ของ 40</b><br>6 ÷ 40 × 100 = <span class="num">15%</span></p>
+        <p class="small" style="margin-bottom:1vh"><span class="qnum p">3</span><b>ลดราคาจาก 50 บาท เหลือ 40 บาท ประหยัดกี่%</b><br>(50 − 40) ÷ 50 × 100 = <span class="num">20%</span></p>
+        <p class="small" style="margin-bottom:1vh"><span class="qnum p">4</span><b>โซฟาราคา 200 บาท ลด 20% แล้วลดอีก 20%</b><br>200 × 0.8 × 0.8 = <span class="num">128 บาท</span> <span style="color:var(--red);font-weight:700">(ไม่ใช่ลด 40%)</span></p>
         <p class="small"><span class="qnum p">5</span><b>ซื้อสินค้า 2 ชิ้น ขายไปชิ้นละ 4,800 บาท</b><br>ชิ้นแรกกำไร 20% → ทุน 4,000 (กำไร 800)<br>ชิ้นที่สองขาดทุน 20% → ทุน 6,000 (ขาดทุน 1,200)<br>รวม = <span class="num" style="color:var(--red)">ขาดทุน 400 บาท</span></p>
       </div>
     </div>
@@ -586,7 +587,7 @@ ol.qlist li{margin-bottom:1.4vh}
   <div class="center">
     <div class="big-num">04</div>
     <h1>แบบฝึกหัด แบบทดสอบ</h1>
-    <p style="color:#ddd6fe;font-family:'Kanit';font-size:clamp(16px,2.8vmin,26px)">Quiz — กดเลือกคำตอบ แล้วดูเฉลยพร้อมวิธีทำทันที</p>
+    <p style="color:#ddd6fe;font-family:'Kanit';font-size:clamp(15px,2.6vmin,24px)">Quiz — กดเลือกคำตอบ แล้วดูเฉลยพร้อมวิธีทำทันที</p>
   </div>
 </section>
 
@@ -594,7 +595,7 @@ ol.qlist li{margin-bottom:1.4vh}
 <section class="slide" style="--accent:var(--purple)">
   <h2>Quiz 1 🥚 อัตราส่วนต่อเนื่อง</h2>
   <div class="body">
-    <div class="card" style="margin-bottom:2vh">
+    <div class="card" style="margin-bottom:1.5vh">
       <p>แม่ค้าซื้อไข่มา <b>220 ใบ</b> มีอัตราส่วนของจำนวนไข่ขนาดใบใหญ่ : ใบกลาง : ใบเล็ก เป็น <b>3 : 2 : 5</b> แล้วจงหาจำนวนไข่ขนาดใบกลาง</p>
     </div>
     <button class="opt" onclick="pick(this,false)">ก) 44 ใบ &nbsp;&nbsp;ไม่ใช่ข้อนี้ — 44 ใบคือไข่ใบเล็กครึ่งเดียว</button>
@@ -612,7 +613,7 @@ ol.qlist li{margin-bottom:1.4vh}
 <section class="slide" style="--accent:var(--purple)">
   <h2>Quiz 2 ✖️ อัตราส่วนกับตัวแปร</h2>
   <div class="body">
-    <div class="card" style="margin-bottom:2vh">
+    <div class="card" style="margin-bottom:1.5vh">
       <p>ถ้า <b>3x = 2k</b> และ <b>5y = 8k</b> แล้วจงหาอัตราส่วนของ <b>x : y</b></p>
     </div>
     <button class="opt" onclick="pick(this,true)">ก) x : y = <b>5 : 12</b></button>
@@ -630,7 +631,7 @@ ol.qlist li{margin-bottom:1.4vh}
 <section class="slide" style="--accent:var(--purple)">
   <h2>Quiz 3 🔊 ร้อยละกับการลดราคา</h2>
   <div class="body">
-    <div class="card" style="margin-bottom:2vh">
+    <div class="card" style="margin-bottom:1.5vh">
       <p>เครื่องเสียงชุดหนึ่งปิดราคา <b>4,200 บาท</b> ถ้าลดราคา <b>30%</b> จะขายกี่บาท</p>
     </div>
     <button class="opt" onclick="pick(this,false)">ก) 3,780 บาท</button>
@@ -650,15 +651,15 @@ ol.qlist li{margin-bottom:1.4vh}
   <div class="body">
     <div class="grid3">
       <div class="card" style="border-top:6px solid var(--purple);text-align:center">
-        <p style="font-size:clamp(30px,6vmin,54px)">🥚</p>
+        <p style="font-size:clamp(26px,5vmin,48px)">🥚</p>
         <p><b>ข้อ 1</b><br>ไข่ใบกลาง = <span class="num">44 ใบ</span><br><span class="small">(66 : 44 : 110)</span></p>
       </div>
       <div class="card" style="border-top:6px solid var(--purple);text-align:center">
-        <p style="font-size:clamp(30px,6vmin,54px)">✖️</p>
+        <p style="font-size:clamp(26px,5vmin,48px)">✖️</p>
         <p><b>ข้อ 2</b><br>x : y = <span class="num">5 : 12</span><br><span class="small">จาก 3x = 2k, 5y = 8k</span></p>
       </div>
       <div class="card" style="border-top:6px solid var(--purple);text-align:center">
-        <p style="font-size:clamp(30px,6vmin,54px)">🔊</p>
+        <p style="font-size:clamp(26px,5vmin,48px)">🔊</p>
         <p><b>ข้อ 3</b><br>ขายได้ <span class="num">2,940 บาท</span><br><span class="small">4,200 × 70%</span></p>
       </div>
     </div>
@@ -670,8 +671,8 @@ ol.qlist li{margin-bottom:1.4vh}
 <section class="slide title-slide">
   <div class="center">
     <h1>จบบทเรียน 🎉</h1>
-    <p class="sub" style="margin-top:2vh;font-size:clamp(16px,3vmin,26px)">เศษส่วน · อัตราส่วน · ร้อยละ</p>
-    <p class="sub" style="margin-top:3vh">Fractions · Ratio · Percentage — พบกันใหม่ครับ</p>
+    <p class="sub" style="margin-top:2vh;font-size:clamp(15px,2.8vmin,24px)">เศษส่วน · อัตราส่วน · ร้อยละ</p>
+    <p class="sub" style="margin-top:2vh">Fractions · Ratio · Percentage — พบกันใหม่ครับ</p>
   </div>
 </section>
 
@@ -833,7 +834,7 @@ const SYMD=[
   const panel=document.createElement('div'); panel.className='mini-graph';
   body.insertBefore(panel,note);
   const G=[
-   {type:'line',pts:[[4,80],[18,360]],labels:['4 ชาม = 80 บาท','18 ชาม = 360 บาท'],xLabel:'จำนวนบะหมี่ (ชาม)',yLabel:'เงิน (บาท)',color:'#0d9488',title:'ข้อ 1 \u00b7 สัดส่วนตรง \u2192 18 ชาม  (2,000)'},
+   {type:'line',pts:[[4,80],[18,360]],labels:['4 ชาม = 80 บาท','18 ชาม = 360 บาท'],xLabel:'จำนวนบะหมี่ (ชาม)',yLabel:'เงิน (บาท)',color:'#0d9488',title:'ข้อ 1 \u00b7 สัดส่วนตรง \u2192 18 ชาม'},
    {type:'line',pts:[[5,35],[8,56]],labels:['5 คน = 35 ม.','8 คน = 56 ม.'],xLabel:'จำนวนช่าง (คน)',yLabel:'ความยาวกำแพง (เมตร)',color:'#0d9488',title:'ข้อ 2 \u00b7 สัดส่วนตรง \u2192 56 เมตร'},
    {type:'inv',pts:[[10,50],[5,100]],labels:['10 คน = 50 วัน','5 คน = 100 วัน'],xLabel:'จำนวนคน (คน)',yLabel:'เวลา (วัน)',color:'#ea580c',title:'ข้อ 3 \u00b7 สัดส่วนผกผัน \u2192 100 วัน'},
    {type:'inv',pts:[[10,12],[4,30]],labels:['','4 คน = 30 วัน'],xLabel:'จำนวนช่าง (คน)',yLabel:'เวลา (วัน)',color:'#ea580c',title:'ข้อ 4 \u00b7 สัดส่วนผกผัน (งาน 3 ชิ้น) \u2192 30 วัน'}
@@ -870,8 +871,6 @@ const h=parseInt((location.hash||'#1').slice(1),10);
 if(!isNaN(h)&&h>=1&&h<=slides.length)show(h-1);
 window.addEventListener('hashchange',()=>{const n=parseInt((location.hash||'#1').slice(1),10);if(!isNaN(n)&&n>=1&&n<=slides.length)show(n-1);});
 </script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
 """
@@ -894,12 +893,55 @@ except Exception:
     _running_in_streamlit = False
 
 if _running_in_streamlit:
-    # โหมด Streamlit: แสดงสไลด์เป็นหน้าเว็บฝังอยู่ในแอปเลย
+    # โหมด Streamlit: ปรับแต่งให้แสดงผลเต็มความสูง Viewport และซ่อน Margin ของ Streamlit
     import streamlit as st
     import streamlit.components.v1 as components
-
+    
     st.set_page_config(page_title="เศษส่วน อัตราส่วน ร้อยละ", layout="wide")
-    components.html(HTML, height=900, scrolling=True)
+
+    # CSS ฉีดเข้าไปเพื่อลบ Padding และบังคับให้แสดงผลเต็มความสูงหน้าจอ (No Scrollbar)
+    st.markdown(
+        """
+        <style>
+            /* ซ่อน Header และ Footer ทั้งหมดของ Streamlit */
+            header, footer, #MainMenu {visibility: hidden; height: 0; display: none;}
+            
+            /* กำหนดองค์ประกอบหลักให้เต็มความสูง 100vh และซ่อน Scrollbar */
+            html, body, [data-testid="stAppViewContainer"], .stApp {
+                height: 100vh !important;
+                width: 100vw !important;
+                overflow: hidden !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            /* ลบ Padding ของ Container หลักใน Streamlit */
+            .block-container {
+                padding: 0rem !important;
+                margin: 0rem !important;
+                max-width: 100% !important;
+                height: 100vh !important;
+            }
+            
+            /* ปรับแต่ง Element ของ Component iframe ให้เต็มขอบ */
+            div[data-testid="stCustomComponentV1"] {
+                height: 100vh !important;
+                width: 100vw !important;
+            }
+            
+            iframe {
+                display: block !important;
+                height: 100vh !important;
+                width: 100vw !important;
+                border: none !important;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # แสดงผลสไลด์ผ่าน iframe บังคับความสูงเต็มหน้าจอ
+    components.html(HTML, height=0, scrolling=False)
 
 elif __name__ == "__main__":
     # โหมดปกติ: รันด้วย python main.py เพื่อสร้างไฟล์ slides.html
