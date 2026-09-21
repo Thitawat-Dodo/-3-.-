@@ -34,7 +34,8 @@ HTML = r"""
 html,body{height:100%;width:100%;overflow:hidden}
 body{font-family:'Sarabun',sans-serif;background:#0f172a;color:var(--ink)}
 #deck{position:fixed;inset:0}
-.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:3vh 4vw 7vh;background:var(--bg);overflow-y:auto}
+/* ปรับ padding-top ของ slide เพื่อเว้นพื้นที่ให้แถบ nav ด้านบน */
+.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:8vh 4vw 3vh;background:var(--bg);overflow-y:auto}
 .slide.active{display:flex;animation:fadein .35s ease}
 @keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .slide::before{content:"";position:absolute;top:0;left:0;right:0;height:.9vh;background:var(--accent,var(--blue))}
@@ -74,12 +75,40 @@ p,li{font-size:clamp(13px,2.2vmin,20px);line-height:1.5}
 .d3{background:linear-gradient(135deg,#c2410c,#f97316)}
 .d4{background:linear-gradient(135deg,#5b21b6,#8b5cf6)}
 
-/* nav - ปรับแต่งขยายขนาดปุ่มที่นี่ที่เดียว */
-#nav{position:fixed;bottom:0;left:0;right:0;height:6.5vh;min-height:50px;background:rgba(15,23,42,.95);display:flex;align-items:center;justify-content:center;gap:20px;z-index:50}
-#nav button{font-family:'Sarabun',sans-serif;background:#334155;color:#e2e8f0;border:none;border-radius:10px;padding:8px 24px;font-size:clamp(15px,2.2vmin,20px);font-weight:600;cursor:pointer;transition:all 0.2s ease}
-#nav button:hover{background:var(--blue);color:#fff;transform:scale(1.05)}
-#counter{color:#94a3b8;font-size:clamp(13px,1.8vmin,16px);min-width:90px;text-align:center;font-weight:600}
-#bar{position:fixed;bottom:6.5vh;left:0;height:.4vh;background:#fbbf24;z-index:50;transition:width .3s}
+/* ===== NAV ด้านบน (Top Navigation Bar) ===== */
+#nav{
+  position:fixed;
+  top:10px;
+  right:15px;
+  height:44px;
+  background:rgba(15,23,42,0.9);
+  backdrop-filter:blur(8px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  z-index:99999;
+  padding:4px 12px;
+  border-radius:30px;
+  border:1px solid rgba(255,255,255,0.15);
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+#nav button{
+  font-family:'Sarabun',sans-serif;
+  background:#334155;
+  color:#e2e8f0;
+  border:none;
+  border-radius:20px;
+  padding:6px 16px;
+  font-size:clamp(12px,2.5vw,15px);
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.2s ease;
+  touch-action:manipulation;
+}
+#nav button:hover{background:var(--blue);color:#fff;transform:scale(1.03)}
+#counter{color:#94a3b8;font-size:clamp(12px,2vw,14px);min-width:60px;text-align:center;font-weight:600}
+#bar{position:fixed;top:0;left:0;height:.4vh;background:#fbbf24;z-index:99999;transition:width .3s}
 
 /* quiz */
 .opt{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:1.4vh 1.2vw;margin-bottom:1vh;font-family:'Sarabun',sans-serif;font-size:clamp(13px,2.2vmin,19px);cursor:pointer;transition:.15s}
@@ -103,7 +132,7 @@ p,li{font-size:clamp(13px,2.2vmin,20px);line-height:1.5}
 ol.qlist{padding-left:1.4em}
 ol.qlist li{margin-bottom:1vh}
 /* sidebar */
-#sidebar{position:fixed;left:0;top:0;bottom:6.5vh;width:210px;background:#0f172a;color:#cbd5e1;padding:5vh 1vw 2vh;display:flex;flex-direction:column;gap:.5vh;z-index:40;border-right:1px solid rgba(255,255,255,.08);transition:transform .3s ease}
+#sidebar{position:fixed;left:0;top:0;bottom:0;width:210px;background:#0f172a;color:#cbd5e1;padding:5vh 1vw 2vh;display:flex;flex-direction:column;gap:.5vh;z-index:99990;border-right:1px solid rgba(255,255,255,.08);transition:transform .3s ease}
 #sidebar.collapsed{transform:translateX(-210px)}
 #sidebar .brand{font-family:'Kanit',sans-serif;font-weight:700;font-size:clamp(12px,1.8vmin,15px);color:#fbbf24;letter-spacing:.1em;margin-bottom:1.5vh;padding:0 .4vw}
 #sidebar .brand small{display:block;font-family:'Sarabun',sans-serif;font-weight:400;font-size:clamp(9px,1.4vmin,11px);color:#94a3b8;margin-top:.3vh;letter-spacing:.05em;line-height:1.3}
@@ -122,11 +151,19 @@ ol.qlist li{margin-bottom:1vh}
 .sb-item.t2.active{background:rgba(13,148,136,.25);color:#fff}
 .sb-item.t3.active{background:rgba(234,88,12,.25);color:#fff}
 .sb-item.t4.active{background:rgba(124,58,237,.25);color:#fff}
-#toggle{position:fixed;left:210px;top:50%;transform:translateY(-50%);background:#334155;color:#e2e8f0;border:none;border-radius:0 10px 10px 0;padding:1vh .6vw;font-size:clamp(12px,1.8vmin,15px);cursor:pointer;z-index:45;transition:left .3s ease;font-family:'Sarabun',sans-serif}
+#toggle{position:fixed;left:210px;top:50%;transform:translateY(-50%);background:#334155;color:#e2e8f0;border:none;border-radius:0 10px 10px 0;padding:1vh .6vw;font-size:clamp(12px,1.8vmin,15px);cursor:pointer;z-index:99991;transition:left .3s ease;font-family:'Sarabun',sans-serif}
 #toggle.collapsed{left:0}
 #toggle:hover{background:var(--blue);color:#fff}
 .slide{padding-left:calc(4vw + 210px)}
 #deck.shifted .slide{padding-left:4vw}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .grid2, .grid3, .grid4 { grid-template-columns: 1fr !important; }
+  .slide { padding: 9vh 5vw 4vh !important; }
+  #nav { top: 8px; right: 8px; padding: 3px 8px; }
+  #nav button { padding: 5px 12px; }
+}
 
 /* ===== interactive v2 ===== */
 .card.link{cursor:pointer;transition:.18s;position:relative;padding-bottom:4vh}
@@ -176,7 +213,7 @@ ol.qlist li{margin-bottom:1vh}
     <h1>เศษส่วน อัตราส่วน ร้อยละ</h1>
     <p style="font-family:'Kanit';font-size:clamp(16px,3vmin,26px);margin-top:2vh">Fractions · Ratio · Percentage</p>
   </div>
-  <div class="footer-tag" style="color:#bfdbfe">กด → เพื่อไปต่อ หรือคลิกปุ่ม Next ด้านล่าง</div>
+  <div class="footer-tag" style="color:#bfdbfe">กด → เพื่อไปต่อ หรือคลิกปุ่ม Next ด้านบน</div>
 </section>
 
 <!-- ============ SLIDE 2 : AGENDA ============ -->
